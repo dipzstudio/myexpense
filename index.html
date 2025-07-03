@@ -4,87 +4,145 @@
   <meta charset="UTF-8">
   <title>Expense Management</title>
   <style>
-    body {
-      background: #f0f6fc;
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+body {
+  background: #f0f6fc;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-    .form-container {
-      max-width: 500px;
-      margin: 80px auto;
-      padding: 40px 30px;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    }
+.form-container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 40px 30px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
 
-    h2 {
-      text-align: center;
-      color: #1a3e8b;
-      margin-bottom: 30px;
-      font-size: 22px;
-    }
+/* Header */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 10px 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #333;
-      font-size: 15px;
-    }
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  padding-left: 10px;
+}
 
-    input, select {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-      box-sizing: border-box;
-    }
+.login-btn {
+  width: 80px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  font: 600 13px sans-serif;
+  cursor: pointer;
+  text-align: center;
+  line-height: 25px;
+  padding: 0;
+}
 
-    input[readonly] {
-      background-color: #f2f2f2;
-    }
+.login-btn:hover {
+  background-color: #218838;
+}
 
-    .info-text {
-      font-size: 13px;
-      color: #666;
-      margin-top: -15px;
-      margin-bottom: 20px;
-    }
+.account-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: block;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #0a63e0;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+/* Labels and Fields */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
 
-    button:hover {
-      background-color: #0849b9;
-    }
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
 
-    .report-link {
-      margin-top: 25px;
-      text-align: left;
-      font-size: 14px;
-    }
+input[readonly] {
+  background-color: #f2f2f2;
+}
 
-    .report-link a {
-      color: #0a63e0;
-      text-decoration: underline;
-      font-weight: 500;
-    }
-	
+/* Side-by-side layout for form rows */
+.form-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 20px;
+}
+
+.form-row label {
+  width: 160px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  margin-top: -20px;
+  margin-bottom: 0; /* override block label margin */
+}
+
+.form-row input,
+.form-row select {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  flex: 1;
+  height: 36px;
+  margin-left: 8px;
+}
+
+/* Info text */
+.info-text {
+  font-size: 13px;
+  color: #666;
+  margin-left: 20px;
+  margin-top: -25px;
+  margin-bottom: 20px;
+}
+
+/* Submit Button */
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #0a63e0;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0849b9;
+}
+
+/* Date Section */
 .date-row {
   display: flex;
   flex-wrap: nowrap;
@@ -106,7 +164,9 @@
   box-sizing: border-box;
 }
 
-.readonly-date { background-color: #f2f2f2; }
+.readonly-date {
+  background-color: #f2f2f2;
+}
 
 .manual-date-wrapper {
   display: flex;
@@ -127,7 +187,10 @@
   left: 0;
 }
 
-.manual-date { height: 100%; margin: 0; }
+.manual-date {
+  height: 100%;
+  margin: 0;
+}
 
 .today-btn {
   width: 70px;
@@ -142,20 +205,88 @@
   white-space: nowrap;
   box-sizing: border-box;
   line-height: 22px;
-  margin-top: 0px;
+  margin-top: 0;
 }
 
-.today-btn:hover { background-color: #bbb; }
+.today-btn:hover {
+  background-color: #bbb;
+}
+
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 10px;
+}
+
+.left-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link-line {
+  font-size: 13px;
+}
+
+.inline-link {
+  text-decoration: underline;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.report-link {
+  font-size: 13px;
+  text-decoration: underline;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.inline-link:hover {
+  text-decoration: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.contact-btn {
+  background-color: #fff9c4; /* Light yellow */
+  color: #000;
+  border: none;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 200px;
+text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 34px;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.contact-btn:hover {
+  background-color: #fce98e;
+}
+
+
 	
   </style>
 </head>
 <body>
 
   <div class="form-container">
-    <h2>Expense Management</h2>
+	<div class="header-row">
+    <h1 class="page-title">Expense Management</h1>
+	<button class="login-btn">Login</button>
+	</div>
     <form>
-      <label for="accountName">Account Name</label>
-      <input type="text" id="accountName" placeholder="Enter name">
+      <label class="account-label">Account Name: <span id="accountHolderName">Guest</span></label>
 
 	<label>Date</label>
 		<div class="date-row">
@@ -171,28 +302,51 @@
 
 	<div class="info-text" id="daysLeft">Loading...</div>
 
-
-      <label for="expenseType">Expense Type</label>
-      <select id="expenseType">
-        <option value="Loan">Loan</option>
-        <option value="Food">Food</option>
-        <option value="Transport">Transport</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Other">Other</option>
+	<div class="form-row">
+	  <label for="expenseType">Expense Type:</label>
+	  <select id="expenseType" name="expenseType">
+		<option value=loan>Loan</option>
+		<option value=rent>Rent</option>
+		<option value=elec>Electricity</option>
+		<option value=recharge>Internet & Mobile</option>
+		<option value=food>Food & Groceries</option>
+		<option value=family>Family Need</option>
+		<option value=other>Additional Exp</option>
+		<option value=invest>Invest</option>
+		<option value=saving>Save Cash</option>
       </select>
-
-      <label for="amount">Expense Amount</label>
+	</div>
+	
+	<div class="form-row">
+	  <label for="typeDetails">Specify Type Details:</label>
+	  <input type="text" id="typeDetails" name="typeDetails" />
+	</div>
+	
+	<div class="form-row">
+      <label for="amount">Expense Amount:</label>
       <input type="number" id="expenseAmount" name="expenseAmount" value="0" min="0" class="expense-input">
+	</div>
 
-      <label for="remaining">Remaining</label>
-      <input type="text" id="remaining" readonly>
+	<div class="form-row">
+	  <label for="remaining">Remaining Amount:</label>
+	  <input type="text" id="remaining" name="remaining" readonly />
+	</div>
 
       <button type="submit">Submit</button>
     </form>
 
-    <div class="report-link">
-      <a href="#">Get My Report</a>
-    </div>
+	<div class="bottom-row">
+	<div class="left-links">
+		<div class="link-line">
+		  <a href="#" class="inline-link">See My Budget</a>
+		</div>
+		<div class="link-line">
+		  <a href="#" class="inline-link">Get My Report</a>
+		</div>
+	  </div>
+		<button class="contact-btn">Report Issue</button>
+	</div>
+
   </div>
 
 <script>
@@ -245,3 +399,4 @@
 
 </body>
 </html>
+</DOCUMENT>
