@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Management</title>
+  <style>
+    body {
+      background: #f0f6fc;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 40px 30px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1a3e8b;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+      font-size: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    input[readonly] {
+      background-color: #f2f2f2;
+    }
+
+    .info-text {
+      font-size: 13px;
+      color: #666;
+      margin-top: -15px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #0a63e0;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0849b9;
+    }
+
+    .report-link {
+      margin-top: 25px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .report-link a {
+      color: #0a63e0;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+	
+.date-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.readonly-date,
+.manual-date {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px;
+  height: 42px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.readonly-date { background-color: #f2f2f2; }
+
+.manual-date-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 120px;
+  height: 42px;
+  position: relative;
+}
+
+.manual-date-label {
+  font-size: 12px;
+  color: #333;
+  line-height: 0.8;
+  padding: 2px 0;
+  position: absolute;
+  top: -18px;
+  left: 0;
+}
+
+.manual-date { height: 100%; margin: 0; }
+
+.today-btn {
+  width: 70px;
+  height: 42px;
+  padding: 10px 0;
+  background: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  font: 600 13px sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  line-height: 22px;
+  margin-top: 0px;
+}
+
+.today-btn:hover { background-color: #bbb; }
+	
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Expense Management</h2>
+    <form>
+      <label for="accountName">Account Name</label>
+      <input type="text" id="accountName" placeholder="Enter name">
+
+	<label>Date</label>
+		<div class="date-row">
+			<input type="text" id="date" readonly class="readonly-date">
+
+		<div class="manual-date-wrapper">
+			<label for="manualDate" class="manual-date-label">Set Date Manually</label>
+			<input type="date" id="manualDate" class="manual-date">
+		</div>
+
+		<button type="button" id="setTodayBtn" class="today-btn">Today</button>
+		</div>
+
+	<div class="info-text" id="daysLeft">Loading...</div>
+
+
+      <label for="expenseType">Expense Type</label>
+      <select id="expenseType">
+        <option value="Loan">Loan</option>
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="amount">Expense Amount</label>
+      <input type="number" id="expenseAmount" name="expenseAmount" value="0" min="0" class="expense-input">
+
+      <label for="remaining">Remaining</label>
+      <input type="text" id="remaining" readonly>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div class="report-link">
+      <a href="#">Get My Report</a>
+    </div>
+  </div>
+
+<script>
+  const dateField = document.getElementById('date');
+  const manualDateField = document.getElementById('manualDate');
+  const daysLeftField = document.getElementById('daysLeft');
+  const todayBtn = document.getElementById('setTodayBtn');
+
+  const today = new Date();
+  const toISO = (d) => d.toISOString().split("T")[0];
+  const formatReadable = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  const updateRemainingDays = (date) => {
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const remaining = lastDay.getDate() - date.getDate();
+    daysLeftField.textContent =
+      remaining === 0
+        ? 'Today is the end of the month'
+        : remaining === 1
+        ? '1 day left in the month'
+        : `${remaining} days left in the month`;
+  };
+
+  // Initial setup
+  dateField.value = formatReadable(today);
+  updateRemainingDays(today);
+
+  // Limit manual date picker to last 30 days only
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(today.getDate() - 30);
+  manualDateField.min = toISO(thirtyDaysAgo);
+  manualDateField.max = toISO(today);
+
+  // On manual date change → update readonly date
+  manualDateField.addEventListener("change", function () {
+    if (this.value) {
+      const selectedDate = new Date(this.value);
+      dateField.value = formatReadable(selectedDate);
+      updateRemainingDays(selectedDate);
+    }
+  });
+
+  // On "Today" button click → reset fields
+  todayBtn.addEventListener("click", function () {
+    manualDateField.value = "";
+    dateField.value = formatReadable(today);
+    updateRemainingDays(today);
+  });
+</script>
+
+</body>
+</html>
